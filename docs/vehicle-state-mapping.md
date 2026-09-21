@@ -8,3 +8,5 @@
 - 이 모델은 read-only 상태입니다. 제어 명령은 별도 API와 Safety 경계를 통해 설계합니다.
 
 `ManufacturerAdapter`는 `oas-can`의 `DecodedCanMessage`만 입력으로 받아 상태를 갱신합니다. CAN transport·DBC file I/O·Raw CAN TX를 소유하지 않습니다. `VehicleState::is_fresh_at`은 timestamp가 없거나 future/stale인 상태를 consumer가 유효한 상태로 취급하지 않게 합니다.
+
+`tests/synthetic_pipeline.rs`는 fixture frame을 decode한 뒤 adapter가 `VehicleState`를 갱신하는 경로를 검증합니다. 이 fixture는 어떤 실제 차량 signal도 나타내지 않습니다.
