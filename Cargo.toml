@@ -1,0 +1,9 @@
+[package]
+name = "oas-car"
+version = "0.1.0"
+edition = "2024"
+license = "Apache-2.0"
+description = "OAS canonical vehicle model and adapters"
+
+[lib]
+path = "src/lib.rs"
