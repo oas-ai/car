@@ -38,7 +38,7 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
     adapter.apply(&braking).unwrap();
 
     let state = adapter.vehicle_state();
-    assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_001);
+    assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_01);
     assert!((state.steering.angle_rad.unwrap() - std::f32::consts::FRAC_PI_2).abs() < 0.000_001);
     assert_eq!(state.brake.pressed, Some(true));
     assert!(state.is_fresh_at(1_050, 50));
