@@ -3,5 +3,5 @@
 #![forbid(unsafe_code)]
 
 pub mod adapter;
-pub mod genesis_g80;
+pub mod genesis_g80_legacy;
 pub mod vehicle_state;

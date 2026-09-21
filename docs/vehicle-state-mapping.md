@@ -11,9 +11,9 @@
 
 `tests/synthetic_pipeline.rs`는 fixture frame을 decode한 뒤 adapter가 `VehicleState`를 갱신하는 경로를 검증합니다. 이 fixture는 어떤 실제 차량 signal도 나타내지 않습니다.
 
-# Genesis G80 2017 mapping
+# Genesis G80 2017 legacy mapping
 
-`GenesisG80Adapter`는 `can`의 DBC subset decoder가 만든 메시지만 받는다.
+`GenesisG80LegacyAdapter`는 `can`의 DBC subset decoder가 만든 메시지만 받는다.
 
 | DBC signal | Canonical field | 변환 |
 | --- | --- | --- |

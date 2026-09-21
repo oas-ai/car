@@ -1,11 +1,11 @@
 use oas_can::decode::{DecodeContext, FrameDecoder};
 use oas_can::frame::{CanFrame, CanId};
-use oas_can::genesis_g80::GenesisG80Decoder;
+use oas_can::genesis_g80_legacy::GenesisG80LegacyDecoder;
 use oas_car::adapter::ManufacturerAdapter;
-use oas_car::genesis_g80::GenesisG80Adapter;
+use oas_car::genesis_g80_legacy::GenesisG80LegacyAdapter;
 
 fn decode(frame: CanFrame) -> oas_can::decode::DecodedCanMessage {
-    GenesisG80Decoder
+    GenesisG80LegacyDecoder
         .decode(
             &frame,
             DecodeContext {
@@ -32,7 +32,7 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
         .unwrap(),
     );
 
-    let mut adapter = GenesisG80Adapter::default();
+    let mut adapter = GenesisG80LegacyAdapter::default();
     adapter.apply(&cluster).unwrap();
     adapter.apply(&steering).unwrap();
     adapter.apply(&braking).unwrap();

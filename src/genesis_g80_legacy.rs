@@ -1,4 +1,4 @@
-//! Genesis G80 2017 decoded signal을 Canonical VehicleState로 변환한다.
+//! Genesis G80 2017 legacy decoded signal을 Canonical VehicleState로 변환한다.
 
 use oas_can::decode::{DecodedCanMessage, SignalValue};
 
@@ -11,11 +11,11 @@ const DEG_TO_RAD: f64 = std::f64::consts::PI / 180.0;
 
 /// Genesis G80 2017의 read-only 상태 adapter다.
 #[derive(Debug, Default)]
-pub struct GenesisG80Adapter {
+pub struct GenesisG80LegacyAdapter {
     state: VehicleState,
 }
 
-impl GenesisG80Adapter {
+impl GenesisG80LegacyAdapter {
     fn number(message: &DecodedCanMessage, signal: &str) -> Option<f64> {
         match message.signals.get(signal) {
             Some(SignalValue::Number(value)) => Some(*value),
@@ -31,7 +31,7 @@ impl GenesisG80Adapter {
     }
 }
 
-impl ManufacturerAdapter for GenesisG80Adapter {
+impl ManufacturerAdapter for GenesisG80LegacyAdapter {
     type Error = ();
 
     fn apply(&mut self, message: &DecodedCanMessage) -> Result<(), Self::Error> {
