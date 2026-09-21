@@ -19,24 +19,18 @@ fn decode(frame: CanFrame) -> oas_can::decode::DecodedCanMessage {
 
 #[test]
 fn genesis_frames_flow_to_canonical_vehicle_state() {
-    let cluster = decode(CanFrame::new(
-        CanId::standard(1265).unwrap(),
-        vec![0, 160, 0, 0],
-        false,
-    )
-    .unwrap());
-    let steering = decode(CanFrame::new(
-        CanId::standard(688).unwrap(),
-        vec![132, 3, 0, 0, 0],
-        false,
-    )
-    .unwrap());
-    let braking = decode(CanFrame::new(
-        CanId::standard(916).unwrap(),
-        vec![0, 0, 0, 0, 0, 64, 0, 0],
-        false,
-    )
-    .unwrap());
+    let cluster =
+        decode(CanFrame::new(CanId::standard(1265).unwrap(), vec![0, 160, 0, 0], false).unwrap());
+    let steering =
+        decode(CanFrame::new(CanId::standard(688).unwrap(), vec![132, 3, 0, 0, 0], false).unwrap());
+    let braking = decode(
+        CanFrame::new(
+            CanId::standard(916).unwrap(),
+            vec![0, 0, 0, 0, 0, 64, 0, 0],
+            false,
+        )
+        .unwrap(),
+    );
 
     let mut adapter = GenesisG80Adapter::default();
     adapter.apply(&cluster).unwrap();
@@ -45,9 +39,7 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
 
     let state = adapter.vehicle_state();
     assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_001);
-    assert!(
-        (state.steering.angle_rad.unwrap() - std::f32::consts::FRAC_PI_2).abs() < 0.000_001
-    );
+    assert!((state.steering.angle_rad.unwrap() - std::f32::consts::FRAC_PI_2).abs() < 0.000_001);
     assert_eq!(state.brake.pressed, Some(true));
     assert!(state.is_fresh_at(1_050, 50));
 }
