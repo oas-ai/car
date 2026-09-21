@@ -16,6 +16,15 @@ pub struct VehicleState {
     pub seatbelts: Vec<SeatbeltState>,
 }
 
+impl VehicleState {
+    /// 관측 시각이 지정된 최대 age 안에 있는지 확인한다.
+    pub fn is_fresh_at(&self, now_ns: u64, maximum_age_ns: u64) -> bool {
+        self.timestamp_ns
+            .and_then(|timestamp_ns| now_ns.checked_sub(timestamp_ns))
+            .is_some_and(|age_ns| age_ns <= maximum_age_ns)
+    }
+}
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum WheelPosition {
     FrontLeft,
@@ -104,5 +113,17 @@ mod tests {
 
         assert_eq!(state.vehicle_speed_mps, None);
         assert!(state.wheels.is_empty());
+    }
+
+    #[test]
+    fn state_freshness_requires_a_recent_non_future_timestamp() {
+        let state = VehicleState {
+            timestamp_ns: Some(100),
+            ..VehicleState::default()
+        };
+
+        assert!(state.is_fresh_at(150, 50));
+        assert!(!state.is_fresh_at(151, 50));
+        assert!(!state.is_fresh_at(99, 50));
     }
 }
