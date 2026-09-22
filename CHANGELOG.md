@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add the read-only Genesis G80 2017 speed, steering, acceleration, and braking adapter with a decoded-frame integration test.
+- Add the read-only Genesis G80 2017 speed, steering, acceleration, braking, and low-beam night-mode adapter with a decoded-frame integration test.
 
 ## [0.1.0] - 2026-09-21
 
