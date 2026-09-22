@@ -64,6 +64,22 @@ fn palisade_frames_flow_to_canonical_vehicle_state() {
         )
         .unwrap(),
     );
+    let doors = decode(
+        CanFrame::new(
+            CanId::standard(1313).unwrap(),
+            vec![57, 0, 0, 0, 0, 0, 0, 0],
+            false,
+        )
+        .unwrap(),
+    );
+    let climate = decode(
+        CanFrame::new(
+            CanId::standard(66).unwrap(),
+            vec![12, 0, 16, 0, 0, 0, 0, 0],
+            false,
+        )
+        .unwrap(),
+    );
 
     let mut adapter = HyundaiPalisade2020Adapter::default();
     adapter.apply(&cluster).unwrap();
@@ -73,6 +89,8 @@ fn palisade_frames_flow_to_canonical_vehicle_state() {
     adapter.apply(&gear).unwrap();
     adapter.apply(&wheels).unwrap();
     adapter.apply(&cruise).unwrap();
+    adapter.apply(&doors).unwrap();
+    adapter.apply(&climate).unwrap();
 
     let state = adapter.vehicle_state();
     assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_01);
@@ -85,5 +103,9 @@ fn palisade_frames_flow_to_canonical_vehicle_state() {
     assert_eq!(state.wheels[0].speed_mps, Some(256.0 / 3.6));
     assert_eq!(state.wheels[3].speed_mps, Some(32.0 / 3.6));
     assert_eq!(state.cruise.enabled, Some(true));
+    assert_eq!(state.raw_signals["GW_DDM_PE.C_DRVDoorStatus"], 1.0);
+    assert_eq!(state.raw_signals["GW_DDM_PE.C_RLDoorStatus"], 3.0);
+    assert_eq!(state.raw_signals["DATC12.CR_Datc_DrTempDispC"], 20.0);
+    assert_eq!(state.raw_signals["DATC12.CR_Datc_PsTempDispC"], 22.0);
     assert!(state.is_fresh_at(1_050, 50));
 }

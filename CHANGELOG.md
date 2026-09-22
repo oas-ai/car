@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Preserve DBC-trusted Palisade body, door, seatbelt, and climate values as raw diagnostics.
 - Add the read-only Hyundai Palisade 2020 speed, steering, acceleration, braking, and low-beam night-mode adapter with a decoded-frame integration test.
 - Map the opendbc `LVR12` gear signal into canonical gear state.
 

@@ -24,6 +24,10 @@
 | `CGW1.CF_Gway_HeadLampLow` | `night_mode` | `0`이면 `false`, 그 외 값이면 `true` |
 | `LVR12.CF_Lvr_Gear` | `gear.position` | `P/R/N/D/S`를 Park/Reverse/Neutral/Drive/Drive로 변환 |
 | `WHL_SPD11.WHL_SPD_*` | `wheels[*].speed_mps` | km/h → m/s |
+
+`CGW1`의 도어·안전벨트 스위치, `GW_DDM_PE` 도어 상태, `DATC12` 앞좌석 섭씨 설정 온도는
+DBC를 신뢰한 read-only `raw_signals`로 보존한다. 이 값들은 canonical door/seatbelt/climate
+상태나 안전·제어 판단에 사용하지 않는다.
 | `SCC14.ACCMode` | `cruise.enabled` | DBC 값 `1`만 `true`, 나머지 정의된 값은 `false` |
 
 알 수 없는 메시지·단위·신호는 상태를 변경하지 않는다. 이 adapter는 CAN 송신이나 차량
