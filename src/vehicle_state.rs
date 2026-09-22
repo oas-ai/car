@@ -14,6 +14,7 @@ pub struct VehicleState {
     pub cruise: CruiseState,
     pub doors: Vec<DoorState>,
     pub seatbelts: Vec<SeatbeltState>,
+    pub night_mode: Option<bool>,
 }
 
 impl VehicleState {

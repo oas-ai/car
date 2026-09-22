@@ -60,6 +60,10 @@ impl ManufacturerAdapter for GenesisG80LegacyAdapter {
                     self.state.brake.pressed = Some(driver_override == 2.0);
                 }
             }
+            "CGW1" => {
+                self.state.night_mode =
+                    Self::number(message, "CF_Gway_HeadLampLow").map(|value| value != 0.0);
+            }
             _ => return Ok(()),
         }
         self.state.timestamp_ns = message.context.timestamp_ns;
