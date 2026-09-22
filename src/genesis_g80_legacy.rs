@@ -3,7 +3,7 @@
 use oas_can::decode::{DecodedCanMessage, SignalValue};
 
 use crate::adapter::ManufacturerAdapter;
-use crate::vehicle_state::VehicleState;
+use crate::vehicle_state::{GearPosition, VehicleState};
 
 const KPH_TO_MPS: f64 = 1.0 / 3.6;
 const MPH_TO_MPS: f64 = 0.447_04;
@@ -27,6 +27,16 @@ impl GenesisG80LegacyAdapter {
         match message.signals.get("CF_Clu_SPEED_UNIT") {
             Some(SignalValue::Enumeration(value)) => Some(value),
             _ => None,
+        }
+    }
+
+    fn gear_position(value: f64) -> GearPosition {
+        match value as u8 {
+            0 => GearPosition::Park,
+            7 => GearPosition::Reverse,
+            6 => GearPosition::Neutral,
+            5 | 8 => GearPosition::Drive,
+            _ => GearPosition::Unspecified,
         }
     }
 }
@@ -63,6 +73,11 @@ impl ManufacturerAdapter for GenesisG80LegacyAdapter {
             "CGW1" => {
                 self.state.night_mode =
                     Self::number(message, "CF_Gway_HeadLampLow").map(|value| value != 0.0);
+            }
+            "LVR12" => {
+                if let Some(gear) = Self::number(message, "CF_Lvr_Gear") {
+                    self.state.gear.position = Self::gear_position(gear);
+                }
             }
             _ => return Ok(()),
         }

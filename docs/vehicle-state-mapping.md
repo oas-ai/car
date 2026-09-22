@@ -22,6 +22,7 @@
 | `TCS13.ACCEL_REF_ACC` | `acceleration_mps2` | m/s² |
 | `TCS13.DriverOverride` | `brake.pressed` | 값 `2`일 때 `true` |
 | `CGW1.CF_Gway_HeadLampLow` | `night_mode` | `0`이면 `false`, 그 외 값이면 `true` |
+| `LVR12.CF_Lvr_Gear` | `gear.position` | `P/R/N/D/S`를 Park/Reverse/Neutral/Drive/Drive로 변환 |
 
 알 수 없는 메시지·단위·신호는 상태를 변경하지 않는다. 이 adapter는 CAN 송신이나 차량
 제어를 수행하지 않는다.

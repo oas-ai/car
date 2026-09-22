@@ -9,4 +9,4 @@ description = "OAS canonical vehicle model and adapters"
 path = "src/lib.rs"
 
 [dependencies]
-oas-can = { git = "https://github.com/oas-ai/can.git", rev = "819dcda4304d5641d0576069ec38886d56ef22e5" }
+oas-can = { git = "https://github.com/oas-ai/can.git", rev = "91945a08e49c431c5f3e3c8055790be8e06b144d" }
