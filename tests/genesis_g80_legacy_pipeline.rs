@@ -23,10 +23,10 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
         decode(CanFrame::new(CanId::standard(1265).unwrap(), vec![0, 160, 0, 0], false).unwrap());
     let steering =
         decode(CanFrame::new(CanId::standard(688).unwrap(), vec![132, 3, 0, 0, 0], false).unwrap());
-    let braking = decode(
+    let accelerating_and_braking = decode(
         CanFrame::new(
             CanId::standard(916).unwrap(),
-            vec![0, 0, 0, 0, 0, 64, 0, 0],
+            vec![0, 0, 0, 0, 124, 68, 0, 0],
             false,
         )
         .unwrap(),
@@ -35,11 +35,12 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
     let mut adapter = GenesisG80LegacyAdapter::default();
     adapter.apply(&cluster).unwrap();
     adapter.apply(&steering).unwrap();
-    adapter.apply(&braking).unwrap();
+    adapter.apply(&accelerating_and_braking).unwrap();
 
     let state = adapter.vehicle_state();
     assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_01);
     assert!((state.steering.angle_rad.unwrap() - std::f32::consts::FRAC_PI_2).abs() < 0.000_001);
+    assert!((state.acceleration_mps2.unwrap() - 1.25).abs() < 0.000_01);
     assert_eq!(state.brake.pressed, Some(true));
     assert!(state.is_fresh_at(1_050, 50));
 }

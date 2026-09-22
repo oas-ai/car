@@ -53,6 +53,9 @@ impl ManufacturerAdapter for GenesisG80LegacyAdapter {
                 }
             }
             "TCS13" => {
+                if let Some(acceleration) = Self::number(message, "ACCEL_REF_ACC") {
+                    self.state.acceleration_mps2 = Some(acceleration as f32);
+                }
                 if let Some(driver_override) = Self::number(message, "DriverOverride") {
                     self.state.brake.pressed = Some(driver_override == 2.0);
                 }

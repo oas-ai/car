@@ -19,6 +19,7 @@
 | --- | --- | --- |
 | `CLU11.CF_Clu_Vanz` | `vehicle_speed_mps` | `CF_Clu_SPEED_UNIT`에 따라 km/h 또는 mph를 m/s로 변환 |
 | `SAS11.SAS_Angle` | `steering.angle_rad` | deg → rad |
+| `TCS13.ACCEL_REF_ACC` | `acceleration_mps2` | m/s² |
 | `TCS13.DriverOverride` | `brake.pressed` | 값 `2`일 때 `true` |
 
 알 수 없는 메시지·단위·신호는 상태를 변경하지 않는다. 이 adapter는 CAN 송신이나 차량
