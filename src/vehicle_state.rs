@@ -1,5 +1,7 @@
 //! OEM 신호와 분리된 OAS read-only 차량 상태 모델이다.
 
+use std::collections::BTreeMap;
+
 /// OAS Canonical Vehicle Model의 read-only 상태 snapshot이다.
 #[derive(Debug, Clone, PartialEq, Default)]
 pub struct VehicleState {
@@ -15,6 +17,7 @@ pub struct VehicleState {
     pub doors: Vec<DoorState>,
     pub seatbelts: Vec<SeatbeltState>,
     pub night_mode: Option<bool>,
+    pub raw_signals: BTreeMap<String, f64>,
 }
 
 impl VehicleState {

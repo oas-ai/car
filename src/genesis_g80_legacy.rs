@@ -70,6 +70,13 @@ impl ManufacturerAdapter for GenesisG80LegacyAdapter {
     type Error = ();
 
     fn apply(&mut self, message: &DecodedCanMessage) -> Result<(), Self::Error> {
+        for (signal, value) in &message.signals {
+            if let SignalValue::Number(value) = value {
+                self.state
+                    .raw_signals
+                    .insert(format!("{}.{}", message.message_name, signal), *value);
+            }
+        }
         match message.message_name.as_str() {
             "CLU11" => {
                 let Some(speed) = Self::number(message, "CF_Clu_Vanz") else {
