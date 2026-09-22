@@ -3,5 +3,5 @@
 #![forbid(unsafe_code)]
 
 pub mod adapter;
-pub mod genesis_g80_legacy;
+pub mod hyundai_palisade_2020;
 pub mod vehicle_state;

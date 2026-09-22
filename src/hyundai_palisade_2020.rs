@@ -1,4 +1,4 @@
-//! Genesis G80 2017 legacy decoded signal을 Canonical VehicleState로 변환한다.
+//! Hyundai Palisade 2020 decoded signal을 Canonical VehicleState로 변환한다.
 
 use oas_can::decode::{DecodedCanMessage, SignalValue};
 
@@ -9,13 +9,13 @@ const KPH_TO_MPS: f64 = 1.0 / 3.6;
 const MPH_TO_MPS: f64 = 0.447_04;
 const DEG_TO_RAD: f64 = std::f64::consts::PI / 180.0;
 
-/// Genesis G80 2017의 read-only 상태 adapter다.
+/// Hyundai Palisade 2020의 read-only 상태 adapter다.
 #[derive(Debug, Default)]
-pub struct GenesisG80LegacyAdapter {
+pub struct HyundaiPalisade2020Adapter {
     state: VehicleState,
 }
 
-impl GenesisG80LegacyAdapter {
+impl HyundaiPalisade2020Adapter {
     fn number(message: &DecodedCanMessage, signal: &str) -> Option<f64> {
         match message.signals.get(signal) {
             Some(SignalValue::Number(value)) => Some(*value),
@@ -66,7 +66,7 @@ impl GenesisG80LegacyAdapter {
     }
 }
 
-impl ManufacturerAdapter for GenesisG80LegacyAdapter {
+impl ManufacturerAdapter for HyundaiPalisade2020Adapter {
     type Error = ();
 
     fn apply(&mut self, message: &DecodedCanMessage) -> Result<(), Self::Error> {

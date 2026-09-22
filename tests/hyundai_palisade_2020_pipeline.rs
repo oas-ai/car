@@ -1,12 +1,12 @@
 use oas_can::decode::{DecodeContext, FrameDecoder};
 use oas_can::frame::{CanFrame, CanId};
-use oas_can::genesis_g80_legacy::GenesisG80LegacyDecoder;
+use oas_can::hyundai_palisade_2020::HyundaiPalisade2020Decoder;
 use oas_car::adapter::ManufacturerAdapter;
-use oas_car::genesis_g80_legacy::GenesisG80LegacyAdapter;
+use oas_car::hyundai_palisade_2020::HyundaiPalisade2020Adapter;
 use oas_car::vehicle_state::GearPosition;
 
 fn decode(frame: CanFrame) -> oas_can::decode::DecodedCanMessage {
-    GenesisG80LegacyDecoder
+    HyundaiPalisade2020Decoder
         .decode(
             &frame,
             DecodeContext {
@@ -19,7 +19,7 @@ fn decode(frame: CanFrame) -> oas_can::decode::DecodedCanMessage {
 }
 
 #[test]
-fn genesis_frames_flow_to_canonical_vehicle_state() {
+fn palisade_frames_flow_to_canonical_vehicle_state() {
     let cluster =
         decode(CanFrame::new(CanId::standard(1265).unwrap(), vec![0, 160, 0, 0], false).unwrap());
     let steering =
@@ -65,7 +65,7 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
         .unwrap(),
     );
 
-    let mut adapter = GenesisG80LegacyAdapter::default();
+    let mut adapter = HyundaiPalisade2020Adapter::default();
     adapter.apply(&cluster).unwrap();
     adapter.apply(&steering).unwrap();
     adapter.apply(&accelerating_and_braking).unwrap();

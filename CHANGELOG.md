@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Add the read-only Genesis G80 2017 speed, steering, acceleration, braking, and low-beam night-mode adapter with a decoded-frame integration test.
+- Add the read-only Hyundai Palisade 2020 speed, steering, acceleration, braking, and low-beam night-mode adapter with a decoded-frame integration test.
 - Map the opendbc `LVR12` gear signal into canonical gear state.
 
 ## [0.1.0] - 2026-09-21
