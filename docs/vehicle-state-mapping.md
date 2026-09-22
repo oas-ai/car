@@ -23,6 +23,8 @@
 | `TCS13.DriverOverride` | `brake.pressed` | 값 `2`일 때 `true` |
 | `CGW1.CF_Gway_HeadLampLow` | `night_mode` | `0`이면 `false`, 그 외 값이면 `true` |
 | `LVR12.CF_Lvr_Gear` | `gear.position` | `P/R/N/D/S`를 Park/Reverse/Neutral/Drive/Drive로 변환 |
+| `WHL_SPD11.WHL_SPD_*` | `wheels[*].speed_mps` | km/h → m/s |
+| `SCC14.ACCMode` | `cruise.enabled` | DBC 값 `1`만 `true`, 나머지 정의된 값은 `false` |
 
 알 수 없는 메시지·단위·신호는 상태를 변경하지 않는다. 이 adapter는 CAN 송신이나 차량
 제어를 수행하지 않는다.

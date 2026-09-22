@@ -48,6 +48,22 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
         )
         .unwrap(),
     );
+    let wheels = decode(
+        CanFrame::new(
+            CanId::standard(902).unwrap(),
+            vec![0, 32, 0, 16, 0, 8, 0, 4],
+            false,
+        )
+        .unwrap(),
+    );
+    let cruise = decode(
+        CanFrame::new(
+            CanId::standard(905).unwrap(),
+            vec![0, 0, 0, 0, 1, 0, 0, 0],
+            false,
+        )
+        .unwrap(),
+    );
 
     let mut adapter = GenesisG80LegacyAdapter::default();
     adapter.apply(&cluster).unwrap();
@@ -55,6 +71,8 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
     adapter.apply(&accelerating_and_braking).unwrap();
     adapter.apply(&lighting).unwrap();
     adapter.apply(&gear).unwrap();
+    adapter.apply(&wheels).unwrap();
+    adapter.apply(&cruise).unwrap();
 
     let state = adapter.vehicle_state();
     assert!((state.vehicle_speed_mps.unwrap() - 80.0 / 3.6).abs() < 0.000_01);
@@ -63,5 +81,9 @@ fn genesis_frames_flow_to_canonical_vehicle_state() {
     assert_eq!(state.brake.pressed, Some(true));
     assert_eq!(state.night_mode, Some(true));
     assert_eq!(state.gear.position, GearPosition::Park);
+    assert_eq!(state.wheels.len(), 4);
+    assert_eq!(state.wheels[0].speed_mps, Some(256.0 / 3.6));
+    assert_eq!(state.wheels[3].speed_mps, Some(32.0 / 3.6));
+    assert_eq!(state.cruise.enabled, Some(true));
     assert!(state.is_fresh_at(1_050, 50));
 }

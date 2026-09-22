@@ -5,7 +5,7 @@ version = 4
 [[package]]
 name = "oas-can"
 version = "0.1.0"
-source = "git+https://github.com/oas-ai/can.git?rev=91945a08e49c431c5f3e3c8055790be8e06b144d#91945a08e49c431c5f3e3c8055790be8e06b144d"
+source = "git+https://github.com/oas-ai/can.git?rev=f6a7c432e7b1cccf098fa9ef9142eea314cd38a9#f6a7c432e7b1cccf098fa9ef9142eea314cd38a9"
 
 [[package]]
 name = "oas-car"

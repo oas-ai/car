@@ -3,7 +3,7 @@
 use oas_can::decode::{DecodedCanMessage, SignalValue};
 
 use crate::adapter::ManufacturerAdapter;
-use crate::vehicle_state::{GearPosition, VehicleState};
+use crate::vehicle_state::{GearPosition, VehicleState, WheelPosition, WheelState};
 
 const KPH_TO_MPS: f64 = 1.0 / 3.6;
 const MPH_TO_MPS: f64 = 0.447_04;
@@ -37,6 +37,31 @@ impl GenesisG80LegacyAdapter {
             6 => GearPosition::Neutral,
             5 | 8 => GearPosition::Drive,
             _ => GearPosition::Unspecified,
+        }
+    }
+
+    fn cruise_enabled(value: f64) -> Option<bool> {
+        match value as u8 {
+            1 => Some(true),
+            0 | 2..=4 => Some(false),
+            _ => None,
+        }
+    }
+
+    fn set_wheel_speed(&mut self, position: WheelPosition, speed_kph: f64) {
+        let speed_mps = (speed_kph * KPH_TO_MPS) as f32;
+        if let Some(wheel) = self
+            .state
+            .wheels
+            .iter_mut()
+            .find(|wheel| wheel.position == position)
+        {
+            wheel.speed_mps = Some(speed_mps);
+        } else {
+            self.state.wheels.push(WheelState {
+                position,
+                speed_mps: Some(speed_mps),
+            });
         }
     }
 }
@@ -78,6 +103,22 @@ impl ManufacturerAdapter for GenesisG80LegacyAdapter {
                 if let Some(gear) = Self::number(message, "CF_Lvr_Gear") {
                     self.state.gear.position = Self::gear_position(gear);
                 }
+            }
+            "WHL_SPD11" => {
+                for (signal, position) in [
+                    ("WHL_SPD_FL", WheelPosition::FrontLeft),
+                    ("WHL_SPD_FR", WheelPosition::FrontRight),
+                    ("WHL_SPD_RL", WheelPosition::RearLeft),
+                    ("WHL_SPD_RR", WheelPosition::RearRight),
+                ] {
+                    if let Some(speed_kph) = Self::number(message, signal) {
+                        self.set_wheel_speed(position, speed_kph);
+                    }
+                }
+            }
+            "SCC14" => {
+                self.state.cruise.enabled =
+                    Self::number(message, "ACCMode").and_then(Self::cruise_enabled);
             }
             _ => return Ok(()),
         }
